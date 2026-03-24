@@ -4,251 +4,163 @@
 <meta name='viewport' content='initial-scale = 1, minimum-scale = 1, maximum-scale = 1'/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="IE=10">
-<title>Curso APS - Segurança do Paciente</title>
+<title></title>
+<style type="text/css">#initialLoading{background:url(assets/htmlimages/loader.gif) no-repeat center center;background-color:#ffffff;position:absolute;margin:auto;top:0;left:0;right:0;bottom:0;z-index:10010;}</style>
 
-<link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
-<link rel="icon" type="image/png" href="assets/img/favicon.png">
-
-<!-- Loader original -->
-<style type="text/css">
-#initialLoading{
-  background:url(assets/htmlimages/loader.gif) no-repeat center center;
-  background-color:#ffffff;
-  position:absolute;
-  margin:auto;
-  top:0; left:0; right:0; bottom:0;
-  z-index:10010;
-}
-</style>
-
-<!-- Tela de boas-vindas-->
-<style>
-#welcomeScreen {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: url('assets/img/start-course.png') no-repeat center center;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #ffffff;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  z-index: 99999;
-  overflow: hidden;
-}
-
-#welcomeScreen::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(12, 45, 87, 0.6);
-  z-index: 0;
-}
-
-#welcomeContent {
-  position: relative;
-  z-index: 1;
-  max-width: 700px;
-  padding: 20px;
-  animation: fadeIn 1.5s ease;
-}
-
-#welcomeContent h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 15px;
-  line-height: 1.2;
-}
-
-#welcomeContent p {
-  font-size: 1.05rem;
-  margin: 4px 0;
-  font-weight: 400;
-  opacity: 0.9;
-}
-
-#welcomeButton {
-  margin-top: 30px;
-  background: #ffffff;
-  color: #0c2d57;
-  border: none;
-  padding: 14px 50px;
-  border-radius: 30px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#welcomeButton:hover {
-  background: rgba(255, 255, 255, 0.9);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-}
-
-#welcomeScreen.fadeOut {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 1s ease, visibility 1s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 768px) {
-  #welcomeContent h1 { font-size: 2rem; }
-  #welcomeContent p { font-size: 0.95rem; }
-  #welcomeButton { padding: 12px 36px; font-size: 1rem; }
-}
-</style>
+"
+"
 
 <script>
+
 var deviceReady = false;
 var initCalled = false ;
 var initialized = false;
 
-// Funções do curso
-function onBodyLoad() {
-    if(typeof window.device === 'undefined') {
-        document.addEventListener("deviceready", function() {
-            deviceReady = true;
-        }, false);
-    } else {
-        deviceReady = true;
-    }
+function onBodyLoad()
+{
+	if(typeof window.device === 'undefined')
+	{
+		document.addEventListener("deviceready", onDeviceReady, false);
+	}
+	else
+	{
+		onDeviceReady();
+	}
 }
-function isLivePreview() {
-  return  ( window.location.pathname.indexOf("/livepreview") === 0 );
-}
-function onDeviceReady() {
-  deviceReady = true;
-  if(initCalled === true)
-    initializeCP();
-}
-function isLivePreviewDirty() {
-  var reqUrl = window.location.protocol + "//" + window.location.host + "/livepreview/isLivePreviewDirty?folder=" + cp.previewFolder;
-  var request = new XMLHttpRequest();
-  request.open('GET', reqUrl);
-  request.responseType = 'text';
-  request.onload = function() {
-    var response = JSON.parse(request.response);
-    if(response.isDirty == false) return;
-    window.location.href = window.location.protocol + "//" + window.location.host + "/livepreview/" + response.folder + "/index.html";
-  };
-  request.send();
+function isLivePreview()
+{
+	return  ( window.location.pathname.indexOf("\/livepreview") === 0 );
 }
 
-// Inicializa o curso
-function initializeCP() {
-  if(initialized) return;
-  initCalled = true;
-  if(cp.pg && deviceReady === false) return;
-
-  function cpInit() {
-    document.body.innerHTML = " <div class='cpMainContainer' id='cpDocument' style='left: 0px; top:0px;' >	<div id='main_container' style='top:0px;position:absolute;'>	<div id='projectBorder' style='top:0px;left:0px;position:absolute;display:block'></div>	<div class='shadow' id='project_container' style='left: 0px; top:0px;position:absolute;' >	<div id='project' class='cp-movie' style='width:1024px ;height:627px '>		<div id='project_main' class='cp-timeline cp-main'>			<div id='div_Slide' onclick='cp.handleClick(event)' style='top:0px; width:1024px ;height:627px ;position:absolute;-webkit-tap-highlight-color: rgba(0,0,0,0);'></div>			<canvas id='slide_transition_canvas'></canvas>		</div>		<div id='autoplayDiv' style='display:block;text-align:center;position:absolute;left:0px;top:0px;'>			<img id='autoplayImage' src='' style='position:absolute;display:block;vertical-align:middle;'/>			<div id='playImage' tabindex='9999' role='button' aria-label='play' onkeydown='cp.CPPlayButtonHandle(event)' onClick='cp.movie.play()' style='position:absolute;display:block;vertical-align:middle;'></div>		</div>		<div id='cc' style='left:0px; float:left;position:absolute;visibility:hidden;pointer-events:none;' onclick='cp.handleCCClick(event)'>			<div id='ccText' style='left:0px;float:left;position:absolute;width:100%;height:100%;'>			<p style='margin-left:8px;margin-right:8px;margin-top:2px;'>			</p>			</div>			<div id='ccClose' style='background-image:url(./assets/htmlimages/ccClose.png);right:0px; float:right;position:absolute;cursor:pointer;width:13px;height:11px;' onclick='cp.showHideCC()'>			</div>		</div>	</div>	<div id='toc' style='left:0px; float:left;position:absolute;-webkit-tap-highlight-color: rgba(0,0,0,0);'>	</div>	<div id='playbar' style='left:0px; float:left;position:absolute'>	</div>	<div id='gestureIcon' class='gestureIcon'>	</div>	<div id='gestureHint' class='gestureHintDiv'>		<div id='gImage' class='gesturesHint'></div>	</div>	<div id='pwdv' style='display:block;text-align:center;position:absolute;width:100%;height:100%;left:0px;top:0px'></div>	<div id='exdv' style='display:block;text-align:center;position:absolute;width:100%;height:100%;left:0px;top:0px'></div>	</div>	</div></div><div id='blockUserInteraction' class='blocker' style='width:100%;height:100%;'>	<table style='width:100%;height:100%;text-align:center;vertical-align:middle' id='loading' class='loadingBackground'>		<tr style='width:100%;height:100%;text-align:center;vertical-align:middle'>			<td style='width:100%;height:100%;text-align:center;vertical-align:middle'>				<image id='preloaderImage'></image>				<div id='loadingString' class='loadingString'>Carregando...</div>			</td>		</tr>	</table></div> <div id='initialLoading'></div>";
-    cp.DoCPInit();
-    var lCpExit = window["DoCPExit"];
-    window["DoCPExit"] = function() {
-      if(cp.UnloadActivties) cp.UnloadActivties();
-      lCpExit();
-    };
-    if(window.CPYTAPINeeded) {
-      var tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.getElementsByTagName('head')[0].appendChild(tag);
-    }
-    if(window.CPVimeoAPINeeded) {
-      var tag = document.createElement('script');
-      tag.src = "https://player.vimeo.com/api/player.js";
-      document.getElementsByTagName('head')[0].appendChild(tag);
-    }
-  }
-  
-  cpInit();
-  initialized = true;
-  if(isLivePreview() === true) {	
-    cp.previewFolder = window.location.href.split("/")[4];
-    setInterval(isLivePreviewDirty, 1000);
-  }
+function onDeviceReady()
+{
+	deviceReady = true ;
+	if(initCalled === true)
+		initializeCP();
 }
+
+function isLivePreviewDirty()
+{
+	var reqUrl = window.location.protocol + "//" + window.location.host + "/livepreview/isLivePreviewDirty?folder=" + cp.previewFolder;
+	var request = new XMLHttpRequest();
+	request.open('GET', reqUrl);
+	request.responseType = 'text';
+	request.onload = function()
+	{
+  		var response = JSON.parse(request.response);
+		  if(response.isDirty == false)
+		  {
+			return;
+		  }
+  		window.location.href = window.location.protocol + "//" + window.location.host + "/livepreview/" + response.folder + "/index.html";
+	};
+	request.send();
+}
+
+function initializeCP()
+{
+	if(initialized)
+		return;
+	initCalled = true ;
+	if(cp.pg && deviceReady === false)
+		return;
+
+	function cpInit()
+	{
+		document.body.innerHTML = " <div class='cpMainContainer' id='cpDocument' style='left: 0px; top:0px;' >	<div id='main_container' style='top:0px;position:absolute;'>	<div id='projectBorder' style='top:0px;left:0px;position:absolute;display:block'></div>	<div class='shadow' id='project_container' style='left: 0px; top:0px;position:absolute;' >	<div id='project' class='cp-movie' style='width:1024px ;height:627px '>		<div id='project_main' class='cp-timeline cp-main'>			<div id='div_Slide' onclick='cp.handleClick(event)' style='top:0px; width:1024px ;height:627px ;position:absolute;-webkit-tap-highlight-color: rgba(0,0,0,0);'></div>			<canvas id='slide_transition_canvas'></canvas>		</div>		<div id='autoplayDiv' style='display:block;text-align:center;position:absolute;left:0px;top:0px;'>			<img id='autoplayImage' src='' style='position:absolute;display:block;vertical-align:middle;'/>			<div id='playImage' tabindex='9999' role='button' aria-label='play' onkeydown='cp.CPPlayButtonHandle(event)' onClick='cp.movie.play()' style='position:absolute;display:block;vertical-align:middle;'></div>		</div>		<div id='cc' style='left:0px; float:left;position:absolute;visibility:hidden;pointer-events:none;' onclick='cp.handleCCClick(event)'>			<div id='ccText' style='left:0px;float:left;position:absolute;width:100%;height:100%;'>			<p style='margin-left:8px;margin-right:8px;margin-top:2px;'>			</p>			</div>			<div id='ccClose' style='background-image:url(./assets/htmlimages/ccClose.png);right:0px; float:right;position:absolute;cursor:pointer;width:13px;height:11px;' onclick='cp.showHideCC()'>			</div>		</div>	</div>	<div id='toc' style='left:0px; float:left;position:absolute;-webkit-tap-highlight-color: rgba(0,0,0,0);'>	</div>	<div id='playbar' style='left:0px; float:left;position:absolute'>	</div>	<div id='gestureIcon' class='gestureIcon'>	</div>	<div id='gestureHint' class='gestureHintDiv'>		<div id='gImage' class='gesturesHint'></div>	</div>	<div id='pwdv' style='display:block;text-align:center;position:absolute;width:100%;height:100%;left:0px;top:0px'></div>	<div id='exdv' style='display:block;text-align:center;position:absolute;width:100%;height:100%;left:0px;top:0px'></div>	</div>	</div></div><div id='blockUserInteraction' class='blocker' style='width:100%;height:100%;'>	<table style='width:100%;height:100%;text-align:center;vertical-align:middle' id='loading' class='loadingBackground'>		<tr style='width:100%;height:100%;text-align:center;vertical-align:middle'>			<td style='width:100%;height:100%;text-align:center;vertical-align:middle'>				<image id='preloaderImage'></image>				<div id='loadingString' class='loadingString'>Carregando...</div>			</td>		</tr>	</table></div> <div id='initialLoading'></div>";
+		cp.DoCPInit();
+		var lCpExit = window["DoCPExit"];
+		window["DoCPExit"] = function()
+		{
+			if(cp.UnloadActivties)
+				cp.UnloadActivties();
+			lCpExit();
+		};
+
+		if( window.CPYTAPINeeded )
+		{
+		  var tag = document.createElement('script');
+		  tag.src = "https://www.youtube.com/iframe_api";
+		  document.getElementsByTagName('head')[0].appendChild(tag);
+		}
+
+		if( window.CPVimeoAPINeeded )
+		{
+		  var tag = document.createElement('script');
+		  tag.src = "https://player.vimeo.com/api/player.js";
+		  document.getElementsByTagName('head')[0].appendChild(tag);
+		}		
+	}
+	
+	cpInit();
+	initialized = true;
+	if(isLivePreview() === true)
+	{	
+		cp.previewFolder = window.location.href.split("\/")[4];
+		setInterval(isLivePreviewDirty, 1000);
+	}
+}
+
 </script>
-</head>
 
+ </head>
 <body onload="onBodyLoad()">
-  <!-- Tela de boas-vindas -->
-  <div id="welcomeScreen">
-    <div id="welcomeContent">
-      <h1>Segurança do Paciente na Atenção Primária à Saúde (APS)</h1>
-      <p><strong>Autora:</strong> Lucimara de Souza Cogo</p>
-      <p><strong>Orientadora:</strong> Maria do Carmo Fernandez Lourenço Haddad</p>
-      <p><strong>Universidade Estadual do Norte do Paraná – UENP</strong></p>
-      <p>Campus Bandeirantes</p>
-      <button id="welcomeButton">Iniciar o Curso</button>
-    </div>
-  </div>
-
-  <div id='initialLoading'></div>
-
+		<div id='initialLoading'></div>
 <script>
-document.getElementById("welcomeButton").addEventListener("click", function() {
-  const welcome = document.getElementById("welcomeScreen");
-  welcome.classList.add("fadeOut");
-  setTimeout(() => {
-    initializeCP(); // inicia o curso normalmente
-  }, 800);
-});
+		(function()
+		{
+			if(document.documentMode < 9)
+			{
+				document.body.innerHTML = "";
+				document.write("The content you are trying to view is not supported in the current Document Mode of Internet Explorer. Change the Document Mode to Internet Explorer 9 Standards and try to view the content again.<br>To change the Document Mode, press F12, click Document Mode: <current mode>, and then select Internet Explorer 9 Standards.");
+				return;
+			}
+			window.addEventListener("load",function() 
+			{
+				setTimeout(function() 
+				{					
+					var script = document.createElement('script');
+					script.type = 'text/javascript';
+					script.src = 'assets/js/CPXHRLoader.js';
+					script.defer = 'defer';
+					script.onload = function()
+					{
+						var lCSSLoaded = false;
+						var lJSLoaded = false;
+						function constructDIVs()
+						{
+							if(lCSSLoaded && lJSLoaded)
+							{
+								initializeCP();
+							}
+						}
+						cpXHRJSLoader.css('assets/css/CPLibraryAll.css',function() {
+							lCSSLoaded = true;
+							constructDIVs();
+						});
+						var lJSFiles = [  'assets/js/jquery-3.3.1.min.js','assets/js/CPM.js' ];
+						cpXHRJSLoader.js(lJSFiles,function()
+						{
+							//console.log("js loaded");
 
-(function() {
-  if(document.documentMode < 9) {
-    document.body.innerHTML = "";
-    document.write("The content you are trying to view is not supported in the current Document Mode of Internet Explorer. Change the Document Mode to Internet Explorer 9 Standards and try to view the content again.<br>To change the Document Mode, press F12, click Document Mode: <current mode>, and then select Internet Explorer 9 Standards.");
-    return;
-  }
-  window.addEventListener("load",function() {
-    setTimeout(function() {					
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = 'assets/js/CPXHRLoader.js';
-      script.defer = 'defer';
-      script.onload = function() {
-        var lCSSLoaded = false;
-        var lJSLoaded = false;
-        function constructDIVs() {
-          console.log("Scripts e imagens carregados. Aguardando clique do usuário.");
-        }
-        cpXHRJSLoader.css('assets/css/CPLibraryAll.css',function() {
-          lCSSLoaded = true;
-          constructDIVs();
-        });
-        var lJSFiles = [ 'assets/js/jquery-3.3.1.min.js','assets/js/CPM.js' ];
-        cpXHRJSLoader.js(lJSFiles,function() {
-          var imagesJSONFiles = [ 'dr/imgmd.json' ];
-          cpXHRJSLoader.loadImagesJSON(imagesJSONFiles,function(imageToJSONPathMap){
-            cp.imageToJSONPathMap = imageToJSONPathMap;
-            var imageJSONFiles = [ 'dr/img1.json','dr/img10.json','dr/img11.json','dr/img12.json','dr/img13.json','dr/img14.json','dr/img15.json','dr/img16.json','dr/img17.json','dr/img18.json','dr/img19.json','dr/img2.json','dr/img20.json','dr/img3.json','dr/img4.json','dr/img5.json','dr/img6.json','dr/img7.json','dr/img8.json','dr/img9.json' ];
-            if(window.location.protocol.substr(0,4) == "file")
-              cpXHRJSLoader.preloadURLs(imageJSONFiles, constructDIVs);
-            lJSLoaded = true;
-            if(window.location.protocol.substr(0,4) != "file" || !imageJSONFiles.length)
-              constructDIVs();
-          });
-        });
-      }
-      document.getElementsByTagName('head')[0].appendChild(script);
-    },1);
-  },false);
-})();
+							var imagesJSONFiles = [ 'dr/imgmd.json' ];
+							cpXHRJSLoader.loadImagesJSON(imagesJSONFiles,function(imageToJSONPathMap){
+								cp.imageToJSONPathMap = imageToJSONPathMap;
+								var imageJSONFiles = [ 'dr/img1.json','dr/img10.json','dr/img11.json','dr/img12.json','dr/img13.json','dr/img14.json','dr/img2.json','dr/img3.json','dr/img4.json','dr/img5.json','dr/img6.json','dr/img7.json','dr/img8.json','dr/img9.json' ];
+								if(window.location.protocol.substr(0,4) == "file")
+									cpXHRJSLoader.preloadURLs(imageJSONFiles, constructDIVs);
+								lJSLoaded = true;
+								if(window.location.protocol.substr(0,4) != "file" || !imageJSONFiles.length)
+									constructDIVs();
+							});
+						});
+					}
+					document.getElementsByTagName('head')[0].appendChild(script);
+				},1);
+			},false);
+		})();
+		
 </script>
-
-<noscript style="text-align:center;font-size:24px;">
-Enable Javascript support in the browser.
-</noscript>
-
+<noscript style="text-align:center;font-size:24px;">Enable Javascript support in the browser.</noscript>
 </body>
 </html>
